@@ -8,5 +8,6 @@ import (
 func main()  {
  	r := gin.Default()
 	r.GET("/posts", controllers.PostsGetAll)
+  r.GET("/posts/:id", controllers.PostsGet)
 	r.Run() 
 }
