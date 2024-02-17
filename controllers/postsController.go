@@ -69,3 +69,32 @@ func PostsGet (c *gin.Context){
   })
 }
 
+func PostsUpdate (c *gin.Context){
+  // Get values from request body
+  id := c.Param("id")
+  
+  var body struct {
+    Title string
+    Body string
+  }
+  
+  c.Bind(&body)
+  
+  // Get the post
+  var post models.Post
+  initializers.DB.First(&post, id)
+
+  // Update the post 
+  result := initializers.DB.Model(&post).Updates(models.Post{Title: body.Title, Body: body.Body,})
+
+  // Return the new post
+  if result.Error != nil {
+    c.Status(400)
+    return
+  }
+
+  c.JSON(200, gin.H{
+    "post": post,
+  })
+}
+
